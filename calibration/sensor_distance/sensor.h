@@ -1,7 +1,7 @@
 #ifndef SENSOR
 #define SENSOR
 
-#define FILTER_LENGTH 200
+#define FILTER_LENGTH 1000
 #define SENSOR_UPDATE_US 500
 
 class Sensor {
