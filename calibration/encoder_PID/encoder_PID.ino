@@ -137,7 +137,7 @@ uint32_t MyCallback(uint32_t currentTime) {
   
   if (counter % 100*pidSampleTime == 0)
   {
-    input = (double) position/2800*2*3.141592653;      
+    input = (double) position;      
         
     myPID.Compute();
 
