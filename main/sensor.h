@@ -4,6 +4,8 @@
 #define FILTER_LENGTH 200
 #define SENSOR_UPDATE_US 500
 
+#define SENSOR_COLLECT_MS FILTER_LENGTH*SENSOR_UPDATE_US*1.5/1000
+
 class Sensor {
   private:
     int pin = 0;
