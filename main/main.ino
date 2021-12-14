@@ -1,7 +1,7 @@
 //set JP4 to RD4
 //set JP1 to 5
 //set JP2 to 34
-//pin 3 resitor to ground
+//pin 3 and pin 5resitor to ground
 
 #include "motor.h"
 #include "sensor.h"
