@@ -107,13 +107,7 @@ bool Motor::at_position() const {
   return abs(position - setpoint) <= allowed_error;
 }
 void Motor::wait_position() const {
-  while(!at_position()){}
-  /*
-  Serial.print("At position:");
-  Serial.print(position);
-  Serial.print(",");
-  Serial.println(setpoint);
-  */
+  while(!at_position());
 }
 void Motor::set_position(int p){
   position = p;

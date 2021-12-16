@@ -1,5 +1,6 @@
-close all;
 vals = [-1.07716E-20;4.35263E-17;-7.26628E-14;6.48489E-11;-3.33216E-08;9.77453E-06;-0.001465032;0.06569285;5.31114646];
+d_limit = 0.5;
+zero_correction = 200;
 
 str = input("What file do you want to plot? ",'s');
 tbl = readtable(str);
@@ -20,10 +21,11 @@ for i = 1:1:n
        v(i) = NaN;
    end
    d(i) = distance(v(i),vals);
-   if d(i) < 0.1 || d(i) > 2
+   if d(i) < 0.1 || d(i) > d_limit
        d(i) = NaN;
    end
-   pitch(i) = -tbl(i,2)/2800*2*pi;
+   
+   pitch(i) = -(tbl(i,2)+zero_correction)/2800*2*pi;
    yaw(i) = tbl(i,1)/(2800*2)*2*pi;
    
    x(i) = cos(pitch(i))*d(i)*cos(yaw(i));
@@ -31,18 +33,22 @@ for i = 1:1:n
    z(i) = sin(pitch(i))*d(i);
 end
 
+figure;
 plot3(x,y,z,".");
 %copied from https://www.mathworks.com/matlabcentral/answers/267468-change-colour-of-points-in-plot3-with-increasing-z-value
-cla
-patch([x.' nan],[y.' nan],[z.' nan],[z.' nan],'EdgeColor','interp','FaceColor','none')
+%cla
+%patch([x.' nan],[y.' nan],[z.' nan],[z.' nan],'EdgeColor','interp','FaceColor','none')
 %end copy
 hold on;
-plot3(0,0,0,"o");
+%plot3(0,0,0,"o");
+[cX,cY,cZ] = cylinder(0.025);
+cZ = cZ/20-0.04;
+surf(cX,cY,cZ);
 
 xlabel("x (m)");
 ylabel("y (m)");
 zlabel("z (m)");
-axis([-2 2 -2 2 0 2]);
+axis([-d_limit d_limit -d_limit d_limit -0.04 d_limit]);
 title(str);
 
 function [d] = distance(v,fit)
