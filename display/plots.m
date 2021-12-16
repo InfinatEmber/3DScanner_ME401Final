@@ -51,6 +51,49 @@ zlabel("z (m)");
 axis([-d_limit d_limit -d_limit d_limit -0.04 d_limit]);
 title(str);
 
+num_total = size(x,1);
+num_healthy = 0;
+X = zeros(num_total,1);
+Y = zeros(num_total,1);
+Z = zeros(num_total,1);
+for i = 1:num_total
+    if ~isnan(x(i))
+        num_healthy = num_healthy+1;
+        X(num_healthy) = x(i);
+        Y(num_healthy) = y(i);
+        Z(num_healthy) = z(i);
+    end
+end
+
+[n, V, p] = affine_fit([X Y Z]);
+
+dev = zeros(num_healthy,1);
+for i = 1:num_healthy
+    v = p - [X(i) Y(i) Z(i)];
+    dev(i) = dot(v,n);
+end
+
+mean(dev);
+
+lambda = dot(n,p);
+
+planex = [min(x) max(x)];
+planey = [min(y) max(y)];
+
+planez = zeros(2);
+for i = 1:2
+    for j = i:2
+        planez(j,i) = -(n(1) * planex(i) + n(2) * planey(i) - lambda)/n(3);
+    end
+end
+
+figure;
+plot3(X,Y,Z);
+hold on;
+surf(planex,planey,planez);
+
+
+
 function [d] = distance(v,fit)
     d = 0;
     for i = 0:1:(size(fit)-1)
